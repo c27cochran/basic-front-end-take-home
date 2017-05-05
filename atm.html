@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+		<script src="http://labs.abeautifulsite.net/archived/jquery-alerts/demo/jquery.js" type="text/javascript"></script>
+		<script src="http://labs.abeautifulsite.net/archived/jquery-alerts/demo/jquery.alerts.js" type="text/javascript"></script>
+		<link href="http://labs.abeautifulsite.net/archived/jquery-alerts/demo/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+  		<link href="atm.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript">
+
+	$(document).ready(function () {
+
+    $('#pin').val('');
+    
+    var balance = 100;
+
+    function showBalance() {
+        jAlert('You now have an account balance of $' + balance, 'Account Balance');
+    }
+
+    function logOut() {
+    	$('#mainATM').hide();
+        $('#plus').removeClass('gray');
+        $('#star').removeClass('gray');
+        $('#maestro').removeClass('gray');
+        $('#pulse').removeClass('gray');
+        $('#visa').removeClass('gray');
+        $('#prompt').show();
+        $('#pin').val('');
+    }
+    
+    $("#balanceButton").click(function () {
+        showBalance();
+    });
+
+    $("#enterPinButton").click(function () {
+        logOut();
+    });
+    
+    $("#withdrawButton").click(function () {
+        jPrompt('How many dollars would you like to withdraw?', '', 'Withdraw', function (amount) {
+            if(amount < 0 || isNaN(amount) || amount == ''){
+              jAlert('You did not enter a valid number!');
+              return;
+            }
+            
+            if(amount > balance){
+              jAlert('You cannot withdraw more money than your current balance, $' + balance);
+              return;
+            }
+            
+            balance = balance - parseFloat(amount,10).toFixed(2);
+            jAlert('You have withdrawn $' + amount);
+            showBalance();
+        });
+    });
+
+    $("#depositButton").click(function () {
+        jPrompt('How much money would you like to deposit?', '', 'Deposit', function (amount) {
+            if(amount < 0 || isNaN(amount) || amount == ''){
+              jAlert('You did not enter a valid number!');
+              return;
+            }
+            
+            balance = +balance + +amount;
+            
+            jAlert('You have deposited $' + balance);
+            showBalance();
+        });
+    });
+});
+
+	</script>
+
+  <title></title>
+</head>
+
+<body>
+    <div id="main">
+    <div id="header">
+        <div class="roundedCorners" id="logo">
+        	<img height="122" id="sign" src="atm/atm_sign.png" width="298"> 
+        	<img height="63" id="graffiti" src="atm/graffiti.png" width="207">
+        </div>
+    </div>
+
+    <div id="atm">
+        <div id="creditCard">
+            <ul id="sprite-menu">
+                <li><span class="star" id="star"></span></li>
+
+                <li><span class="pulse" id="pulse"></span></li>
+
+                <li><span class="maestro" id="maestro"></span></li>
+
+                <li><span class="master" id="master"></span></li>
+
+                <li><span class="plus" id="plus"></span></li>
+
+                <li><span class="visa" id="visa"></span></li>
+            </ul>
+        </div>
+
+        <div id="atmForm">
+            <div id="prompt">
+                <center>Please enter your PIN: 
+                	<input id="pin" name="pin" type="text">
+                </center>
+            </div>
+            <div id="mainATM" style="display:none;">
+            	<span id="choice">Please make a choice...</span>
+                <div id="buttons">
+                    <img id="gray1" src="atm/grayLine.png"><input type="button" id="empty1" class="button" />
+                    <img id="gray2" src="atm/grayLine.png"><input type="button" id="empty2" class="button" />
+                    <img id="gray3" src="atm/grayLine.png"><input type="button" id="empty3" class="button" />
+                    <img id="gray4" src="atm/grayLine.png"><input type="button" id="empty4" class="button" />
+            	   <div id="withdraw"><img id="gray5" src="atm/grayLine.png"><img id="white1" src="atm/whiteLine.png"><input type="button" id="withdrawButton" class="button" />Withdraw</div>
+            	   <div id="balance"><img id="gray6" src="atm/grayLine.png"><img id="white2" src="atm/whiteLine.png"><input type="button" id="balanceButton" class="button" />Balance</div>
+            	   <div id="deposit"><img id="gray7" src="atm/grayLine.png"><img id="white3" src="atm/whiteLine.png"><input type="button" id="depositButton" class="button" />Deposit</div>
+            	   <div id="enterPin"><img id="gray8" src="atm/grayLine.png"><img id="white4" src="atm/whiteLine.png"><input type="button" id="enterPinButton" class="button" />Re-Enter PIN</div>
+                </div>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+			$("#pin").keyup(function() {
+        		if ($('#pin').val() == "1234"){
+            		$('#mainATM').show('slow');
+            		$('#plus').addClass('gray');
+                    $('#star').addClass('gray');
+                    $('#maestro').addClass('gray');
+                    $('#pulse').addClass('gray');
+                    $('#visa').addClass('gray');
+            		$('#prompt').hide();
+        		}
+        	});
+        </script>
+        <img id="spanning" src="atm/spanning_systems.png"> 
+    	<img id="sticker" src="atm/sticker_graf.png">
+    </div>
+	</div>
+</body>
+
+
+</html>
